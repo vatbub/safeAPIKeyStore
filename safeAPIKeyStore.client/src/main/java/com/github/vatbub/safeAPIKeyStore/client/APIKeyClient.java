@@ -37,12 +37,55 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeoutException;
 
+/**
+ * Communicates with an APIKey-server to retrieve api keys. Intended for static use.
+ *
+ * @author Frederik Kammel
+ */
 public class APIKeyClient {
+
+    /**
+     * Retrieves the specified api key from the specified server. Assumes that the server runs on the default port (1650).
+     *
+     * @param serverHost The host address of the server.
+     * @param apiKeyName The name of the api key to retrieve
+     * @return The requested api key or {@code null} in case of unexpected errors.
+     * @throws IOException             In case the connection with the server cannot be established or the received key cannot be decrypted.
+     * @throws TimeoutException        If the server takes more than 10 seconds time to respond.
+     * @throws InternalServerException If something went wrong on the server side
+     */
+    public static String getApiKey(String serverHost, String apiKeyName) throws IOException, TimeoutException, BadRequestException, InternalServerException, BadPaddingException, IllegalBlockSizeException {
+        return getApiKey(serverHost, 1650, apiKeyName);
+    }
+
+    /**
+     * Retrieves the specified api key from the specified server.
+     *
+     * @param serverHost The host address of the server.
+     * @param serverPort The port that the server is running on
+     * @param apiKeyName The name of the api key to retrieve
+     * @return The requested api key or {@code null} in case of unexpected errors.
+     * @throws IOException             In case the connection with the server cannot be established or the received key cannot be decrypted.
+     * @throws TimeoutException        If the server takes more than 10 seconds time to respond.
+     * @throws InternalServerException If something went wrong on the server side
+     */
     public static String getApiKey(String serverHost, int serverPort, String apiKeyName) throws IOException, TimeoutException, BadRequestException, InternalServerException, BadPaddingException, IllegalBlockSizeException {
         return getApiKey(serverHost, serverPort, apiKeyName, 10000);
     }
 
-    public static String getApiKey(String serverHost, int serverPort, String apiKeyName, int responseTimeoutInMilliSeconds) throws IOException, TimeoutException, BadRequestException, InternalServerException, BadPaddingException, IllegalBlockSizeException {
+    /**
+     * Retrieves the specified api key from the specified server.
+     *
+     * @param serverHost                    The host address of the server.
+     * @param serverPort                    The port that the server is running on
+     * @param apiKeyName                    The name of the api key to retrieve
+     * @param responseTimeoutInMilliSeconds Time in milliseconds after which the request is aborted if no response was received from the server.
+     * @return The requested api key or {@code null} in case of unexpected errors.
+     * @throws IOException             In case the connection with the server cannot be established or the received key cannot be decrypted.
+     * @throws TimeoutException        If the server takes more than the specified time to respond.
+     * @throws InternalServerException If something went wrong on the server side
+     */
+    public static String getApiKey(String serverHost, int serverPort, String apiKeyName, int responseTimeoutInMilliSeconds) throws IOException, TimeoutException, InternalServerException {
         try {
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
             keyPairGenerator.initialize(2048);
@@ -92,7 +135,8 @@ public class APIKeyClient {
             } else {
                 throw new IllegalStateException("Illegal response from server. Server sent object of type " + object.getClass().getName());
             }
-        } catch (NoSuchAlgorithmException | InterruptedException | NoSuchPaddingException | InvalidKeyException e) {
+        } catch (NoSuchAlgorithmException | InterruptedException | NoSuchPaddingException | InvalidKeyException | BadPaddingException | BadRequestException | IllegalBlockSizeException e) {
+            // Should never happen
             e.printStackTrace();
             return null;
         }

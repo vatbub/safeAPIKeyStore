@@ -32,7 +32,7 @@ public class Main {
     private static Server server;
 
     public static void main(String[] args) {
-        Common.setAppName("com.com.github.com.github.vatbub.com.github.vatbub.server");
+        Common.setAppName("com.github.vatbub.safeAPIKeyStore.server");
         Options cliOptions = new Options();
 
         Option portOption = new Option("p", "port", true, "The port to run the server on");

@@ -41,9 +41,4 @@ public class APIKeyClientTest extends SafeAPIKeyStoreTestBase {
         String apiKey2 = APIKeyClient.getApiKey("localhost", port, apiKey2Name);
         Assert.assertEquals(apiKey2Value, apiKey2);
     }
-
-    @Test
-    public void badResponseHandlingTest(){
-
-    }
 }

@@ -21,6 +21,9 @@ package com.github.vatbub.safeAPIKeyStore.common;
  */
 
 
+/**
+ * Returned by the server if something went wrong on the server side
+ */
 public class InternalServerException extends Exception{
     /**
      * Constructs a new {@code InternalServerException} with {@code null} as its

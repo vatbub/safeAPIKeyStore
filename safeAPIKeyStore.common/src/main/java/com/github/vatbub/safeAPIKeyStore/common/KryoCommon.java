@@ -23,8 +23,9 @@ package com.github.vatbub.safeAPIKeyStore.common;
 
 import com.esotericsoftware.kryo.Kryo;
 
-import java.nio.charset.Charset;
-
+/**
+ * For internal use only.
+ */
 public class KryoCommon {
     public static void registerClasses(Kryo kryo) {
         kryo.setReferences(true);

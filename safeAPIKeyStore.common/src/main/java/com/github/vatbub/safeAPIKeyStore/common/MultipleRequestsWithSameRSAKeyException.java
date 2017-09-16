@@ -22,7 +22,7 @@ package com.github.vatbub.safeAPIKeyStore.common;
 
 
 /**
- * Thrown if the same RSA public key is used multiple times
+ * Returned by the server if the same RSA public key is used multiple times
  */
 public class MultipleRequestsWithSameRSAKeyException extends RuntimeException {
     /**

@@ -20,36 +20,60 @@ package com.github.vatbub.safeAPIKeyStore.common;
  * #L%
  */
 
-
+/**
+ * Used to request an api key from the server
+ */
 public class APIKeyRequest {
     private byte[] encodedClientPublicKey;
     private String requestedApiKeyName;
 
     /**
      * Used by KryoNet
+     * @deprecated
      */
     @SuppressWarnings("unused")
     public APIKeyRequest() {
         this(null, null);
     }
 
+    /**
+     * Creates a new APIKeyRequest
+     * @param clientPublicKey The client's public key encoded using {@code keyPair.getPublic().getEncoded()}
+     * @param requestedApiKeyName The name of the api key to retrieve
+     */
     public APIKeyRequest(byte[] clientPublicKey, String requestedApiKeyName) {
         setEncodedClientPublicKey(clientPublicKey);
         setRequestedApiKeyName(requestedApiKeyName);
     }
 
+    /**
+     * The client's public key encoded using {@code keyPair.getPublic().getEncoded()}
+     * @return The client's public key encoded using {@code keyPair.getPublic().getEncoded()}
+     */
     public byte[] getEncodedClientPublicKey() {
         return encodedClientPublicKey;
     }
 
+    /**
+     * Sets the client's public key encoded using {@code keyPair.getPublic().getEncoded()}
+     * @param encodedClientPublicKey The client's public key encoded using {@code keyPair.getPublic().getEncoded()}
+     */
     public void setEncodedClientPublicKey(byte[] encodedClientPublicKey) {
         this.encodedClientPublicKey = encodedClientPublicKey;
     }
 
+    /**
+     * The name of the api key to retrieve
+     * @return The name of the api key to retrieve
+     */
     public String getRequestedApiKeyName() {
         return requestedApiKeyName;
     }
 
+    /**
+     * Sets the name of the api key to retrieve
+     * @param requestedApiKeyName The name of the api key to retrieve
+     */
     public void setRequestedApiKeyName(String requestedApiKeyName) {
         this.requestedApiKeyName = requestedApiKeyName;
     }

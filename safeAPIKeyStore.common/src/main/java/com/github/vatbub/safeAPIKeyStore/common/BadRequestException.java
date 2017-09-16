@@ -20,7 +20,9 @@ package com.github.vatbub.safeAPIKeyStore.common;
  * #L%
  */
 
-
+/**
+ * Returned by the server if a bad request was sent.
+ */
 public class BadRequestException extends Exception {
     /**
      * Constructs a new {@code BadRequestException} with {@code null} as its

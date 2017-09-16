@@ -42,6 +42,9 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
+/**
+ * The API key server.
+ */
 public class Server {
     private final String fileNameForUsedPublicKeys = "usedPublicKeys";
 
@@ -49,10 +52,24 @@ public class Server {
     private com.esotericsoftware.kryonet.Server kryoServer;
     private ArrayList<byte[]> usedKeys;
 
+    /**
+     * Launches a server on the specified port with the specified api keys.
+     *
+     * @param port            The port to run the server on
+     * @param apiKeysFileName The absolute or relative file path to the properties-file that contains the api keys to serve
+     * @throws IOException If the server fails to launch for any reason.
+     */
     public Server(int port, String apiKeysFileName) throws IOException {
         this(port, new File(apiKeysFileName));
     }
 
+    /**
+     * Launches a server on the specified port with the specified api keys.
+     *
+     * @param port        The port to run the server on
+     * @param apiKeysFile The properties-file that contains the api keys to serve
+     * @throws IOException If the server fails to launch for any reason.
+     */
     public Server(int port, File apiKeysFile) throws IOException {
         // init api keys
         FOKLogger.info(Server.class.getName(), "Resolving the apiKeysFile to '" + apiKeysFile.getAbsolutePath() + "'");
@@ -65,6 +82,11 @@ public class Server {
         initServer(port);
     }
 
+    /**
+     * Returns the currently served api keys
+     *
+     * @return The currently served api keys
+     */
     public Properties getApiKeys() {
         return apiKeys;
     }
@@ -107,8 +129,8 @@ public class Server {
         kryoServer.start();
     }
 
-    private void addUsedPublicKey(byte[] encodedPubliyKey) {
-        usedKeys.add(encodedPubliyKey);
+    private void addUsedPublicKey(byte[] encodedPublicKey) {
+        usedKeys.add(encodedPublicKey);
         try {
             saveUsedPublicKeys();
         } catch (FileNotFoundException e) {
@@ -116,34 +138,54 @@ public class Server {
         }
     }
 
+    /**
+     * Causes the server to re-read the already used (and thus blocked) public RSA keys from disk.
+     * Reads the list from the default location ({@code <appDataPath>/com.github.vatbub.safeAPIKeyStore.server/usedPublicKeys})
+     */
     public void readUsedPublicKeys() {
         readUsedPublicKeys(Common.getAndCreateAppDataPath() + fileNameForUsedPublicKeys);
     }
 
+    /**
+     * Causes the server to re-read the already used (and thus blocked) public RSA keys from disk.
+     *
+     * @param filePath The absolute or relative path to the file to read the used keys list from
+     */
     @SuppressWarnings("unchecked")
-    public void readUsedPublicKeys(String absoluteFilePath) {
+    public void readUsedPublicKeys(String filePath) {
         try {
-            Input input = new Input((new FileInputStream(absoluteFilePath)));
+            Input input = new Input((new FileInputStream(filePath)));
             usedKeys = (ArrayList<byte[]>) getKryoToSaveUsedPublicKeys().readClassAndObject(input);
             input.close();
         } catch (KryoException | ClassCastException | NullPointerException | FileNotFoundException e) {
             FOKLogger.severe(Server.class.getName(), "Unable to read the used public keys list from disk (" + e.getClass().getName() + "), initializing an empty list...");
-            File usedKeysFile = new File(absoluteFilePath);
+            File usedKeysFile = new File(filePath);
             if (usedKeysFile.exists()) {
                 if (!usedKeysFile.delete()) {
-                    FOKLogger.severe(Server.class.getName(), "Could not delete the file '" + absoluteFilePath + "', please try to delete it manually or else it might lead to more exceptions");
+                    FOKLogger.severe(Server.class.getName(), "Could not delete the file '" + filePath + "', please try to delete it manually or else it might lead to more exceptions");
                 }
             }
             usedKeys = new ArrayList<>();
         }
     }
 
+    /**
+     * Saves the list of used (and thus blocked) public RSA keys to the default location ({@code <appDataPath>/com.github.vatbub.safeAPIKeyStore.server/usedPublicKeys})
+     *
+     * @throws FileNotFoundException if the file exists but is a directory rather than a regular file, does not exist but cannot be created, or cannot be opened for any other reason
+     */
     public void saveUsedPublicKeys() throws FileNotFoundException {
         saveUsedPublicKeys(Common.getAndCreateAppDataPath() + fileNameForUsedPublicKeys);
     }
 
-    public void saveUsedPublicKeys(String absoluteFilePath) throws FileNotFoundException {
-        Output output = new Output(new FileOutputStream(absoluteFilePath));
+    /**
+     * Saves the list of used (and thus blocked) public RSA keys to the specified location
+     *
+     * @param filePath The absolute or relative path to the file to save the list in
+     * @throws FileNotFoundException if the file exists but is a directory rather than a regular file, does not exist but cannot be created, or cannot be opened for any other reason
+     */
+    public void saveUsedPublicKeys(String filePath) throws FileNotFoundException {
+        Output output = new Output(new FileOutputStream(filePath));
         getKryoToSaveUsedPublicKeys().writeClassAndObject(output, usedKeys);
         output.close();
     }
@@ -156,28 +198,51 @@ public class Server {
         return kryo;
     }
 
+    /**
+     * Resets the list of used public RSA keys permanently by deleting the corresponding file on the drive.
+     * If the file cannot be deleted for any reason, a temporary reset is performed (server will be reset until rebooted)
+     * This method assumes that the list was saved on the default location ({@code <appDataPath>/com.github.vatbub.safeAPIKeyStore.server/usedPublicKeys}).
+     *
+     * @return {@code true} if the server was reset permanently, {@code false} if only temporarily
+     * @see #resetTemporarily()
+     */
+    @SuppressWarnings("UnusedReturnValue")
     public boolean resetPermanently() {
         return resetPermanently(Common.getAndCreateAppDataPath() + fileNameForUsedPublicKeys);
     }
 
-    public boolean resetPermanently(String absolutePathToUsedKeysFile) {
-        File usedKeysFile = new File(absolutePathToUsedKeysFile);
+    /**
+     * Resets the list of used public RSA keys permanently by deleting the corresponding file on the drive.
+     * If the file cannot be deleted for any reason, a temporary reset is performed (server will be reset until rebooted)
+     *
+     * @param pathToUsedKeysFile The absolute or relative path to the file that contains the list of used public RSA keys
+     * @return {@code true} if the server was reset permanently, {@code false} if only temporarily
+     * @see #resetTemporarily()
+     */
+    public boolean resetPermanently(String pathToUsedKeysFile) {
+        File usedKeysFile = new File(pathToUsedKeysFile);
         if (usedKeysFile.exists()) {
             if (!usedKeysFile.delete()) {
-                FOKLogger.severe(Server.class.getName(), "Failed to delete the file '" + absolutePathToUsedKeysFile + "', server will reset temporarily only.");
+                FOKLogger.severe(Server.class.getName(), "Failed to delete the file '" + pathToUsedKeysFile + "', server will reset temporarily only.");
                 resetTemporarily();
                 return false;
             }
         }
 
-        readUsedPublicKeys(absolutePathToUsedKeysFile);
+        readUsedPublicKeys(pathToUsedKeysFile);
         return true;
     }
 
+    /**
+     * Resets the list of public RSA keys temporarily (until the server is rebooted)
+     */
     public void resetTemporarily() {
         usedKeys = new ArrayList<>();
     }
 
+    /**
+     * Shuts the server down.
+     */
     public void stop() {
         kryoServer.stop();
     }
