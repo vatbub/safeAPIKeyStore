@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>bintray-com.github.vatbub-fokprojectsReleases</id>
+            <name>bintray</name>
+            <url>http://dl.bintray.com/com.github.vatbub/fokprojectsReleases</url>
+        </repository>
+        <repository>
+            <snapshots/>
+            <id>snapshots</id>
+            <name>libs-snapshot</name>
+            <url>https://oss.jfrog.org/artifactory/libs-snapshot</url>
+        </repository>
+    </repositories>
+
+    <parent>
+        <groupId>com.github.vatbub</groupId>
+        <artifactId>parentPom</artifactId>
+        <version>0.0.22-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>safeAPIKeyStore</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+
+    <modules>
+        <module>safeAPIKeyStore.server</module>
+        <module>safeAPIKeyStore.client</module>
+        <module>safeAPIKeyStore.common</module>
+        <module>safeAPIKeyStore.unitTests</module>
+    </modules>
+
+    <scm>
+        <connection>scm:git:git@com.github.com:com.github.vatbub/${gitRepoName}.git</connection>
+        <url>https://com.github.com/com.github.vatbub/${gitRepoName}</url>
+        <developerConnection>scm:git:git@com.github.com:com.github.vatbub/${gitRepoName}.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://com.github.com/com.github.vatbub/${gitRepoName}/issues</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>Travis CI</system>
+        <url>https://travis-ci.org/com.github.vatbub/${gitRepoName}</url>
+    </ciManagement>
+
+    <properties>
+        <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
+        <gitRepoName>safeAPIKeyStore</gitRepoName>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.esotericsoftware</groupId>
+            <artifactId>kryonet</artifactId>
+            <version>2.22.0-RC1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.vatbub</groupId>
+            <artifactId>common.core</artifactId>
+            <version>0.1.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+</project>
