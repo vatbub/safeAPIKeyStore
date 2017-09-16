@@ -86,6 +86,7 @@ public class APIKeyClient {
      * @throws InternalServerException If something went wrong on the server side
      */
     public static String getApiKey(String serverHost, int serverPort, String apiKeyName, int responseTimeoutInMilliSeconds) throws IOException, TimeoutException, InternalServerException {
+        Client kryoClient = new Client();
         try {
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
             keyPairGenerator.initialize(2048);
@@ -93,7 +94,6 @@ public class APIKeyClient {
 
             APIKeyRequest request = new APIKeyRequest(keyPair.getPublic().getEncoded(), apiKeyName);
 
-            Client kryoClient = new Client();
             KryoCommon.registerClasses(kryoClient.getKryo());
             kryoClient.start();
 
@@ -139,6 +139,8 @@ public class APIKeyClient {
             // Should never happen
             e.printStackTrace();
             return null;
+        } finally {
+            kryoClient.stop();
         }
     }
 }
