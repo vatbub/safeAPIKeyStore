@@ -55,6 +55,7 @@ public class Server {
 
     public Server(int port, File apiKeysFile) throws IOException {
         // init api keys
+        FOKLogger.info(Server.class.getName(), "Resolving the apiKeysFile to '" + apiKeysFile.getAbsolutePath() + "'");
         Properties tempApiKeys = new Properties();
         tempApiKeys.load(new FileReader(apiKeysFile));
         apiKeys = tempApiKeys;

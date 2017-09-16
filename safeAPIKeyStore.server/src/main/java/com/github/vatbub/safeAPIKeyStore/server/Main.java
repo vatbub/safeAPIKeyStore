@@ -50,11 +50,11 @@ public class Main {
 
         try {
             CommandLine commandLine = parser.parse(cliOptions, args);
-            if (commandLine.hasOption(portOption.getArgName()) || !commandLine.hasOption(apiKeyFileOption.getArgName())) {
+            if (commandLine.hasOption(portOption.getOpt()) || !commandLine.hasOption(apiKeyFileOption.getOpt())) {
                 printHelpMessage(cliOptions);
             }
-            int port = Integer.parseInt(commandLine.getOptionValue(portOption.getArgName(), "1650"));
-            String apiKeyFile = commandLine.getOptionValue(apiKeyFileOption.getArgName());
+            int port = Integer.parseInt(commandLine.getOptionValue(portOption.getOpt(), "1650"));
+            String apiKeyFile = commandLine.getOptionValue(apiKeyFileOption.getOpt());
 
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 if (server != null) {
