@@ -71,7 +71,7 @@ In your application, add the following maven dependency:
 <dependency>
     <groupId>com.github.vatbub</groupId>
     <artifactId>safeAPIKeyStore.client</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
 </dependency>
 ```
 
