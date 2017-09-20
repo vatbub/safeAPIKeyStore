@@ -56,7 +56,7 @@ This approach is not entirely foolproof, because anyone can create a RSA keypair
 but this is also somewhat your aim if you create an application with anonymous access.
 
 ## Download
-Since this project was just launched, we do not offer downloads yet. You need to clone the repo and run `mvn package` to create the required jars.
+We don't use GitHub releases and publish on Bintray instead. You can download the server package [here](https://bintray.com/vatbub/fokprojectsReleases/safeAPIKeyStore.server#downloads).
 
 ## Usage
 Create a `*.properties`-file with the api keys that you need. The file should look like the `sampleAPIKeys.properties`-file in ths repository.
