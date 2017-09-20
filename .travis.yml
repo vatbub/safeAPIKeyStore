@@ -8,27 +8,28 @@ addons:
     - oracle-java8-installer
 cache:
   directories:
-  - $HOME/.m2
+  - "$HOME/.m2"
 install: echo Install phase has been disabled as a complete build is run during deployment
 script:
 - mvn test --settings travisMavenSettings.xml
 before_cache:
 - mvn deploy --settings travisMavenSettings.xml -DskipTests=true
 - mvn dependency:copy -Dartifact=com.github.vatbub:awsEc2InstanceRebooter:1.0:jar:jar-with-dependencies
-- java -jar target/dependency/awsEc2InstanceRebooter-1.0-jar-with-dependencies.jar -c reboot -r EU_CENTRAL_1 -k $awsKey -s $awsSecret -i $awsInstanceId
+- java -jar target/dependency/awsEc2InstanceRebooter-1.0-jar-with-dependencies.jar
+  -c reboot -r EU_CENTRAL_1 -k $awsKey -s $awsSecret -i $awsInstanceId
 after_success:
-  - git checkout master
-  - \curl -sSL https://get.rvm.io | bash -s stable --ruby
-  - rvm reload
-  - gem install github_changelog_generator -v 1.13.0
-  - github_changelog_generator
-  - grep "." github_deploy_key >> ~/.ssh/id_rsa
-  - chmod 400 ~/.ssh/id_rsa
-  - git config --global user.email $GH_USER_EMAIL
-  - git config --global user.name $GH_USER_NAME
-  - git add CHANGELOG.md
-  - git commit -m "[skip ci] Updated Changelog"
-  - git push git@github.com:vatbub/commandlineUserPromptProcessor.git master
+- git checkout master
+- "\\curl -sSL https://get.rvm.io | bash -s stable --ruby"
+- rvm reload
+- gem install github_changelog_generator -v 1.13.0
+- github_changelog_generator
+- grep "." github_deploy_key >> ~/.ssh/id_rsa
+- chmod 400 ~/.ssh/id_rsa
+- git config --global user.email $GH_USER_EMAIL
+- git config --global user.name $GH_USER_NAME
+- git add CHANGELOG.md
+- git commit -m "[skip ci] Updated Changelog"
+- git push git@github.com:vatbub/commandlineUserPromptProcessor.git master
 branches:
   only:
   - master
@@ -38,3 +39,6 @@ notifications:
     - vatbub123+travisbuildnotification@googlemail.com
     on_success: never
     on_failure: always
+before_install:
+- openssl aes-256-cbc -K $encrypted_8836c78d5219_key -iv $encrypted_8836c78d5219_iv
+  -in github_deploy_key.enc -out github_deploy_key -d
