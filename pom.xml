@@ -22,12 +22,12 @@
     <parent>
         <groupId>com.github.vatbub</groupId>
         <artifactId>parentPom</artifactId>
-        <version>0.0.22</version>
+        <version>0.0.23-SNAPSHOT</version>
     </parent>
 
     <artifactId>safeAPIKeyStore</artifactId>
     <packaging>pom</packaging>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
 
     <modules>
         <module>safeAPIKeyStore.server</module>
@@ -40,7 +40,7 @@
         <connection>scm:git:git@com.github.com:com.github.vatbub/${gitRepoName}.git</connection>
         <url>https://com.github.com/com.github.vatbub/${gitRepoName}</url>
         <developerConnection>scm:git:git@github.com:vatbub/${gitRepoName}.git</developerConnection>
-        <tag>safeAPIKeyStore-1.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
@@ -68,7 +68,7 @@
         <dependency>
             <groupId>com.github.vatbub</groupId>
             <artifactId>common.core</artifactId>
-            <version>0.1.1</version>
+            <version>0.1.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>
