@@ -41,7 +41,7 @@
     <scm>
         <connection>scm:git:git@com.github.com:com.github.vatbub/${gitRepoName}.git</connection>
         <url>https://com.github.com/com.github.vatbub/${gitRepoName}</url>
-        <developerConnection>scm:git:git@com.github.com:com.github.vatbub/${gitRepoName}.git</developerConnection>
+        <developerConnection>scm:git:git@github.com:vatbub/${gitRepoName}.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
