@@ -13,7 +13,7 @@ cache:
   - "$HOME/.m2"
 install: echo Install phase has been disabled as a complete build is run during deployment
 script:
-- mvn org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar --settings target/travis/settings.xml
+- mvn org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar --settings travisMavenSettings.xml
 before_cache:
 - mvn deploy --settings travisMavenSettings.xml -DskipTests=true
 - mvn dependency:copy -Dartifact=com.github.vatbub:awsEc2InstanceRebooter:1.0:jar:jar-with-dependencies
