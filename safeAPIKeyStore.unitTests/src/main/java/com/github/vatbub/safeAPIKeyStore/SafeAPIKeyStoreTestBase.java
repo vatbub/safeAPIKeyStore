@@ -44,10 +44,10 @@ public abstract class SafeAPIKeyStoreTestBase {
 
     @BeforeClass
     public static void oneTimeSetUp() throws InterruptedException, IOException, IllegalAccessException {
-        Common.setAppName("SafeAPIKeyStoreServerTests");
+        Common.getInstance().setAppName("SafeAPIKeyStoreServerTests");
 
         // Create the api key file
-        File apiKeyFile = new File(Common.getAndCreateAppDataPath() + apiKeysFileName);
+        File apiKeyFile = new File(Common.getInstance().getAndCreateAppDataPath() + apiKeysFileName);
         if (apiKeyFile.exists()) {
             if (!apiKeyFile.delete()) {
                 throw new IllegalAccessException("Unable to delete the file '" + apiKeyFile.getAbsolutePath() + "'");
@@ -56,7 +56,7 @@ public abstract class SafeAPIKeyStoreTestBase {
         Properties apiKeysForTesting = new Properties();
         apiKeysForTesting.setProperty(apiKey1Name, apiKey1Value);
         apiKeysForTesting.setProperty(apiKey2Name, apiKey2Value);
-        apiKeysForTesting.store(new FileWriter(apiKeyFile), "API Keys for unit tests of " + Common.getAppName());
+        apiKeysForTesting.store(new FileWriter(apiKeyFile), "API Keys for unit tests of " + Common.getInstance().getAppName());
 
         FOKLogger.info(SafeAPIKeyStoreTestBase.class.getName(), "Launching server...");
         server = new Server(port, apiKeyFile.getAbsolutePath());

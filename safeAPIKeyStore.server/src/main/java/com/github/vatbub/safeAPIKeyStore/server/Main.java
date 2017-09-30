@@ -32,7 +32,7 @@ public class Main {
     private static Server server;
 
     public static void main(String[] args) {
-        Common.setAppName("com.github.vatbub.safeAPIKeyStore.server");
+        Common.getInstance().setAppName("com.github.vatbub.safeAPIKeyStore.server");
         Options cliOptions = new Options();
 
         Option portOption = new Option("p", "port", true, "The port to run the server on");
@@ -72,6 +72,6 @@ public class Main {
 
     public static void printHelpMessage(Options cliOptions) {
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp(Common.getPathAndNameOfCurrentJar(), cliOptions);
+        formatter.printHelp(Common.getInstance().getPathAndNameOfCurrentJar(), cliOptions);
     }
 }

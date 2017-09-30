@@ -143,7 +143,7 @@ public class Server {
      * Reads the list from the default location ({@code <appDataPath>/com.github.vatbub.safeAPIKeyStore.server/usedPublicKeys})
      */
     public void readUsedPublicKeys() {
-        readUsedPublicKeys(Common.getAndCreateAppDataPath() + fileNameForUsedPublicKeys);
+        readUsedPublicKeys(Common.getInstance().getAndCreateAppDataPath() + fileNameForUsedPublicKeys);
     }
 
     /**
@@ -175,7 +175,7 @@ public class Server {
      * @throws FileNotFoundException if the file exists but is a directory rather than a regular file, does not exist but cannot be created, or cannot be opened for any other reason
      */
     public void saveUsedPublicKeys() throws FileNotFoundException {
-        saveUsedPublicKeys(Common.getAndCreateAppDataPath() + fileNameForUsedPublicKeys);
+        saveUsedPublicKeys(Common.getInstance().getAndCreateAppDataPath() + fileNameForUsedPublicKeys);
     }
 
     /**
@@ -208,7 +208,7 @@ public class Server {
      */
     @SuppressWarnings("UnusedReturnValue")
     public boolean resetPermanently() {
-        return resetPermanently(Common.getAndCreateAppDataPath() + fileNameForUsedPublicKeys);
+        return resetPermanently(Common.getInstance().getAndCreateAppDataPath() + fileNameForUsedPublicKeys);
     }
 
     /**
