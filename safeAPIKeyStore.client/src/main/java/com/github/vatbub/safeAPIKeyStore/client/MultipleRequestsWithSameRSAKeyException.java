@@ -1,4 +1,4 @@
-package com.github.vatbub.safeAPIKeyStore.common;
+package com.github.vatbub.safeAPIKeyStore.client;
 
 /*-
  * #%L

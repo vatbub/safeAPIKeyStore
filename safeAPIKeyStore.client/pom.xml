@@ -34,7 +34,8 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>safeAPIKeyStore.unitTests</artifactId>
+            <artifactId>safeAPIKeyStore.server</artifactId>
+            <type>test-jar</type>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>

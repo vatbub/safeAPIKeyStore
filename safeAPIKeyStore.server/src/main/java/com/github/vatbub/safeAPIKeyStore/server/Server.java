@@ -28,6 +28,7 @@ import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.github.vatbub.common.core.Common;
+import com.github.vatbub.common.core.ListCommon;
 import com.github.vatbub.common.core.logging.FOKLogger;
 import com.github.vatbub.safeAPIKeyStore.common.*;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -105,8 +106,8 @@ public class Server {
                         APIKeyRequest request = (APIKeyRequest) object;
                         byte[] encodedPublicKey = request.getEncodedClientPublicKey();
                         PublicKey publicKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(encodedPublicKey));
-                        if (usedKeys.contains(encodedPublicKey)) {
-                            connection.sendTCP(new MultipleRequestsWithSameRSAKeyException());
+                        if (ListCommon.listContainsArray(usedKeys, encodedPublicKey)) {
+                            connection.sendTCP(new MultipleRequestsWithSameRSAKeyExceptionInternalImpl());
                         } else {
                             addUsedPublicKey(encodedPublicKey);
 
@@ -118,11 +119,11 @@ public class Server {
                             connection.sendTCP(response);
                         }
                     } else {
-                        connection.sendTCP(new BadRequestException("Unknown object type"));
+                        connection.sendTCP(new BadRequestExceptionInternalImpl("Unknown object type"));
                     }
                 } catch (Exception e) {
                     FOKLogger.log(Server.class.getName(), Level.SEVERE, "Internal server exception", e);
-                    connection.sendTCP(new InternalServerException(ExceptionUtils.getRootCauseMessage(e)));
+                    connection.sendTCP(new InternalServerExceptionInternalImpl(e.getMessage(), ExceptionUtils.getRootCauseMessage(e)));
                 }
             }
         });
@@ -222,7 +223,7 @@ public class Server {
             try {
                 Files.delete(usedKeysFile.toPath());
             } catch (IOException e) {
-                FOKLogger.log(Server.class.getName(),Level.SEVERE, "Failed to delete the file '" + pathToUsedKeysFile + "', server will reset temporarily only.", e);
+                FOKLogger.log(Server.class.getName(), Level.SEVERE, "Failed to delete the file '" + pathToUsedKeysFile + "', server will reset temporarily only.", e);
                 resetTemporarily();
                 return false;
             }

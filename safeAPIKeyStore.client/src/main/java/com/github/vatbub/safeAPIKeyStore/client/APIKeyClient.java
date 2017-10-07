@@ -121,12 +121,12 @@ public abstract class APIKeyClient {
 
             // received a response
             Object object = responseObject[0];
-            if (object instanceof BadRequestException) {
-                throw (BadRequestException) object;
-            } else if (object instanceof InternalServerException) {
-                throw (InternalServerException) object;
-            } else if (object instanceof MultipleRequestsWithSameRSAKeyException) {
-                throw (MultipleRequestsWithSameRSAKeyException) object;
+            if (object instanceof BadRequestExceptionInternalImpl) {
+                throw new BadRequestException(((BadRequestExceptionInternalImpl)object).getMessage());
+            } else if (object instanceof InternalServerExceptionInternalImpl) {
+                throw new InternalServerException(((InternalServerExceptionInternalImpl)object).getMessage());
+            } else if (object instanceof MultipleRequestsWithSameRSAKeyExceptionInternalImpl) {
+                throw new MultipleRequestsWithSameRSAKeyException(((MultipleRequestsWithSameRSAKeyExceptionInternalImpl)object).getMessage());
             } else if (object instanceof APIKeyResponse) {
                 APIKeyResponse response = (APIKeyResponse) object;
                 Cipher cipher = Cipher.getInstance("RSA");

@@ -31,9 +31,9 @@ public abstract class KryoCommon {
         kryo.setReferences(true);
         kryo.register(APIKeyRequest.class);
         kryo.register(APIKeyResponse.class);
-        kryo.register(BadRequestException.class);
-        kryo.register(InternalServerException.class);
-        kryo.register(MultipleRequestsWithSameRSAKeyException.class);
+        kryo.register(BadRequestExceptionInternalImpl.class);
+        kryo.register(InternalServerExceptionInternalImpl.class);
+        kryo.register(MultipleRequestsWithSameRSAKeyExceptionInternalImpl.class);
         kryo.register(byte[].class);
         kryo.register(String.class);
     }

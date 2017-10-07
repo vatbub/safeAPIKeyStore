@@ -43,6 +43,10 @@ public abstract class SafeAPIKeyStoreTestBase {
     private static final String apiKeysFileName = "apiKeysForTesting.properties";
     private static Server server;
 
+    public static Server getServer() {
+        return server;
+    }
+
     @BeforeClass
     public static void oneTimeSetUp() throws InterruptedException, IOException, IllegalAccessException {
         Common.getInstance().setAppName("SafeAPIKeyStoreServerTests");

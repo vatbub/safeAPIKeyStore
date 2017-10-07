@@ -22,8 +22,6 @@ package com.github.vatbub.safeAPIKeyStore.client;
 
 
 import com.github.vatbub.safeAPIKeyStore.SafeAPIKeyStoreTestBase;
-import com.github.vatbub.safeAPIKeyStore.common.BadRequestException;
-import com.github.vatbub.safeAPIKeyStore.common.InternalServerException;
 import org.junit.Assert;
 import org.junit.Test;
 

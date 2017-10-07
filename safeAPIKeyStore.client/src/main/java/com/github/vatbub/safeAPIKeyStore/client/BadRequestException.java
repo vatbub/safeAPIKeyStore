@@ -1,4 +1,4 @@
-package com.github.vatbub.safeAPIKeyStore.common;
+package com.github.vatbub.safeAPIKeyStore.client;
 
 /*-
  * #%L
@@ -20,33 +20,32 @@ package com.github.vatbub.safeAPIKeyStore.common;
  * #L%
  */
 
-
 /**
- * Returned by the server if something went wrong on the server side
+ * Returned by the server if a bad request was sent.
  */
-public class InternalServerException extends Exception{
+public class BadRequestException extends Exception {
     /**
-     * Constructs a new {@code InternalServerException} with {@code null} as its
+     * Constructs a new {@code BadRequestException} with {@code null} as its
      * detail message.  The cause is not initialized, and may subsequently be
      * initialized by a call to {@link #initCause}.
      */
-    public InternalServerException() {
+    public BadRequestException() {
     }
 
     /**
-     * Constructs a new {@code InternalServerException} with the specified detail message.
+     * Constructs a new {@code BadRequestException} with the specified detail message.
      * The cause is not initialized, and may subsequently be initialized by a
      * call to {@link #initCause}.
      *
      * @param message the detail message. The detail message is saved for
      *                later retrieval by the {@link #getMessage()} method.
      */
-    public InternalServerException(String message) {
+    public BadRequestException(String message) {
         super(message);
     }
 
     /**
-     * Constructs a new {@code InternalServerException} with the specified detail message and
+     * Constructs a new {@code BadRequestException} with the specified detail message and
      * cause.  <p>Note that the detail message associated with
      * {@code cause} is <i>not</i> automatically incorporated in
      * this runtime exception's detail message.
@@ -58,12 +57,12 @@ public class InternalServerException extends Exception{
      *                permitted, and indicates that the cause is nonexistent or
      *                unknown.)
      */
-    public InternalServerException(String message, Throwable cause) {
+    public BadRequestException(String message, Throwable cause) {
         super(message, cause);
     }
 
     /**
-     * Constructs a new {@code InternalServerException} with the specified cause and a
+     * Constructs a new {@code BadRequestException} with the specified cause and a
      * detail message of <tt>(cause==null ? null : cause.toString())</tt>
      * (which typically contains the class and detail message of
      * <tt>cause</tt>).  This constructor is useful for runtime exceptions
@@ -74,12 +73,12 @@ public class InternalServerException extends Exception{
      *              permitted, and indicates that the cause is nonexistent or
      *              unknown.)
      */
-    public InternalServerException(Throwable cause) {
+    public BadRequestException(Throwable cause) {
         super(cause);
     }
 
     /**
-     * Constructs a new {@code InternalServerException} with the specified detail
+     * Constructs a new {@code BadRequestException} with the specified detail
      * message, cause, suppression enabled or disabled, and writable
      * stack trace enabled or disabled.
      *
@@ -91,7 +90,7 @@ public class InternalServerException extends Exception{
      * @param writableStackTrace whether or not the stack trace should
      *                           be writable
      */
-    public InternalServerException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public BadRequestException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }
