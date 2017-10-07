@@ -35,6 +35,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import javax.crypto.Cipher;
 import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
@@ -46,7 +47,7 @@ import java.util.logging.Level;
  * The API key server.
  */
 public class Server {
-    private final String fileNameForUsedPublicKeys = "usedPublicKeys";
+    private static final String fileNameForUsedPublicKeys = "usedPublicKeys";
 
     private Properties apiKeys;
     private com.esotericsoftware.kryonet.Server kryoServer;
@@ -142,7 +143,7 @@ public class Server {
      * Causes the server to re-read the already used (and thus blocked) public RSA keys from disk.
      * Reads the list from the default location ({@code <appDataPath>/com.github.vatbub.safeAPIKeyStore.server/usedPublicKeys})
      */
-    public void readUsedPublicKeys() {
+    public void readUsedPublicKeys() throws IOException {
         readUsedPublicKeys(Common.getInstance().getAndCreateAppDataPath() + fileNameForUsedPublicKeys);
     }
 
@@ -152,16 +153,14 @@ public class Server {
      * @param filePath The absolute or relative path to the file to read the used keys list from
      */
     @SuppressWarnings("unchecked")
-    public void readUsedPublicKeys(String filePath) {
+    public void readUsedPublicKeys(String filePath) throws IOException {
         try (Input input = new Input((new FileInputStream(filePath)))) {
             usedKeys = (ArrayList<byte[]>) getKryoToSaveUsedPublicKeys().readClassAndObject(input);
         } catch (KryoException | ClassCastException | NullPointerException | FileNotFoundException e) {
             FOKLogger.severe(Server.class.getName(), "Unable to read the used public keys list from disk (" + e.getClass().getName() + "), initializing an empty list...");
             File usedKeysFile = new File(filePath);
             if (usedKeysFile.exists()) {
-                if (!usedKeysFile.delete()) {
-                    FOKLogger.severe(Server.class.getName(), "Could not delete the file '" + filePath + "', please try to delete it manually or else it might lead to more exceptions");
-                }
+                Files.delete(usedKeysFile.toPath());
             }
             usedKeys = new ArrayList<>();
         }
@@ -220,14 +219,20 @@ public class Server {
     public boolean resetPermanently(String pathToUsedKeysFile) {
         File usedKeysFile = new File(pathToUsedKeysFile);
         if (usedKeysFile.exists()) {
-            if (!usedKeysFile.delete()) {
-                FOKLogger.severe(Server.class.getName(), "Failed to delete the file '" + pathToUsedKeysFile + "', server will reset temporarily only.");
+            try {
+                Files.delete(usedKeysFile.toPath());
+            } catch (IOException e) {
+                FOKLogger.log(Server.class.getName(),Level.SEVERE, "Failed to delete the file '" + pathToUsedKeysFile + "', server will reset temporarily only.", e);
                 resetTemporarily();
                 return false;
             }
         }
 
-        readUsedPublicKeys(pathToUsedKeysFile);
+        try {
+            readUsedPublicKeys(pathToUsedKeysFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return true;
     }
 

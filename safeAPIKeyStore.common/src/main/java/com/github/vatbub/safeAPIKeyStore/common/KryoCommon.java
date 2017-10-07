@@ -26,7 +26,7 @@ import com.esotericsoftware.kryo.Kryo;
 /**
  * For internal use only.
  */
-public class KryoCommon {
+public abstract class KryoCommon {
     public static void registerClasses(Kryo kryo) {
         kryo.setReferences(true);
         kryo.register(APIKeyRequest.class);

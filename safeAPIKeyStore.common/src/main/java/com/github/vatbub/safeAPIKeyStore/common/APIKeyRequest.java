@@ -32,6 +32,7 @@ public class APIKeyRequest {
      * @deprecated
      */
     @SuppressWarnings("unused")
+    @Deprecated
     public APIKeyRequest() {
         this(null, null);
     }

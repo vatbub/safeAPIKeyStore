@@ -31,6 +31,7 @@ import org.junit.BeforeClass;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Properties;
 
 public abstract class SafeAPIKeyStoreTestBase {
@@ -49,9 +50,7 @@ public abstract class SafeAPIKeyStoreTestBase {
         // Create the api key file
         File apiKeyFile = new File(Common.getInstance().getAndCreateAppDataPath() + apiKeysFileName);
         if (apiKeyFile.exists()) {
-            if (!apiKeyFile.delete()) {
-                throw new IllegalAccessException("Unable to delete the file '" + apiKeyFile.getAbsolutePath() + "'");
-            }
+            Files.delete(apiKeyFile.toPath());
         }
         Properties apiKeysForTesting = new Properties();
         apiKeysForTesting.setProperty(apiKey1Name, apiKey1Value);

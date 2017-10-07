@@ -30,8 +30,10 @@ public class APIKeyResponse {
 
     /**
      * Used by KryoNet
+     *
      * @deprecated
      */
+    @Deprecated
     @SuppressWarnings("unused")
     public APIKeyResponse() {
         this(null, null, null);
@@ -39,9 +41,10 @@ public class APIKeyResponse {
 
     /**
      * Creates a new APIKeyResponse
+     *
      * @param requestedApiKeyName The name of the requested api key
-     * @param encryptedAPIKey The RSA-encrypted api key
-     * @param encoding The encoding to be used to decode the decrypted api key.
+     * @param encryptedAPIKey     The RSA-encrypted api key
+     * @param encoding            The encoding to be used to decode the decrypted api key.
      */
     public APIKeyResponse(String requestedApiKeyName, byte[] encryptedAPIKey, String encoding) {
         setEncoding(encoding);
@@ -51,6 +54,7 @@ public class APIKeyResponse {
 
     /**
      * The name of the requested api key
+     *
      * @return The name of the requested api key
      */
     public String getRequestedApiKeyName() {
@@ -59,6 +63,7 @@ public class APIKeyResponse {
 
     /**
      * Sets the name of the requested api key
+     *
      * @param requestedApiKeyName The name of the requested api key
      */
     public void setRequestedApiKeyName(String requestedApiKeyName) {
@@ -67,6 +72,7 @@ public class APIKeyResponse {
 
     /**
      * The RSA-encrypted api key
+     *
      * @return The RSA-encrypted api key
      */
     public byte[] getEncryptedAPIKey() {
@@ -75,6 +81,7 @@ public class APIKeyResponse {
 
     /**
      * Sets the RSA-encrypted api key
+     *
      * @param encryptedAPIKey The RSA-encrypted api key
      */
     public void setEncryptedAPIKey(byte[] encryptedAPIKey) {
@@ -83,6 +90,7 @@ public class APIKeyResponse {
 
     /**
      * The encoding to be used to decode the decrypted api key.
+     *
      * @return The encoding to be used to decode the decrypted api key.
      */
     public String getEncoding() {
@@ -91,6 +99,7 @@ public class APIKeyResponse {
 
     /**
      * Sets the encoding to be used to decode the decrypted api key.
+     *
      * @param encoding The encoding to be used to decode the decrypted api key.
      */
     public void setEncoding(String encoding) {

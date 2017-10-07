@@ -42,7 +42,7 @@ import java.util.concurrent.TimeoutException;
  *
  * @author Frederik Kammel
  */
-public class APIKeyClient {
+public abstract class APIKeyClient {
 
     /**
      * Retrieves the specified api key from the specified server. Assumes that the server runs on the default port (1650).
