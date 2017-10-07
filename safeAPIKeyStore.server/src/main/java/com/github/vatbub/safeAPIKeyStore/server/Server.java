@@ -153,10 +153,8 @@ public class Server {
      */
     @SuppressWarnings("unchecked")
     public void readUsedPublicKeys(String filePath) {
-        try {
-            Input input = new Input((new FileInputStream(filePath)));
+        try (Input input = new Input((new FileInputStream(filePath)))) {
             usedKeys = (ArrayList<byte[]>) getKryoToSaveUsedPublicKeys().readClassAndObject(input);
-            input.close();
         } catch (KryoException | ClassCastException | NullPointerException | FileNotFoundException e) {
             FOKLogger.severe(Server.class.getName(), "Unable to read the used public keys list from disk (" + e.getClass().getName() + "), initializing an empty list...");
             File usedKeysFile = new File(filePath);
