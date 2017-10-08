@@ -26,7 +26,11 @@ import com.esotericsoftware.kryo.Kryo;
 /**
  * For internal use only.
  */
-public abstract class KryoCommon {
+public class KryoCommon {
+    private KryoCommon(){
+        throw new IllegalStateException("Class may not be instantiated");
+    }
+
     public static void registerClasses(Kryo kryo) {
         kryo.setReferences(true);
         kryo.register(APIKeyRequest.class);

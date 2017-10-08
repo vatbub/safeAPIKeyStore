@@ -42,7 +42,11 @@ import java.util.concurrent.TimeoutException;
  *
  * @author Frederik Kammel
  */
-public abstract class APIKeyClient {
+public class APIKeyClient {
+
+    private APIKeyClient(){
+        throw new IllegalStateException("Class may not be instantiated");
+    }
 
     /**
      * Retrieves the specified api key from the specified server. Assumes that the server runs on the default port (1650).
@@ -54,7 +58,7 @@ public abstract class APIKeyClient {
      * @throws TimeoutException        If the server takes more than 10 seconds time to respond.
      * @throws InternalServerException If something went wrong on the server side
      */
-    public static String getApiKey(String serverHost, String apiKeyName) throws IOException, TimeoutException, BadRequestException, InternalServerException, BadPaddingException, IllegalBlockSizeException {
+    public static String getApiKey(String serverHost, String apiKeyName) throws InternalServerException, TimeoutException, IOException {
         return getApiKey(serverHost, 1650, apiKeyName);
     }
 
@@ -69,7 +73,7 @@ public abstract class APIKeyClient {
      * @throws TimeoutException        If the server takes more than 10 seconds time to respond.
      * @throws InternalServerException If something went wrong on the server side
      */
-    public static String getApiKey(String serverHost, int serverPort, String apiKeyName) throws IOException, TimeoutException, BadRequestException, InternalServerException, BadPaddingException, IllegalBlockSizeException {
+    public static String getApiKey(String serverHost, int serverPort, String apiKeyName) throws TimeoutException, InternalServerException, IOException {
         return getApiKey(serverHost, serverPort, apiKeyName, 10000);
     }
 

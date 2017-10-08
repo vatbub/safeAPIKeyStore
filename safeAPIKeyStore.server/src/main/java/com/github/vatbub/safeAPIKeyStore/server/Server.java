@@ -48,7 +48,7 @@ import java.util.logging.Level;
  * The API key server.
  */
 public class Server {
-    private static final String fileNameForUsedPublicKeys = "usedPublicKeys";
+    private static final String FILE_NAME_FOR_USED_PUBLIC_KEYS = "usedPublicKeys";
 
     private Properties apiKeys;
     private com.esotericsoftware.kryonet.Server kryoServer;
@@ -145,7 +145,7 @@ public class Server {
      * Reads the list from the default location ({@code <appDataPath>/com.github.vatbub.safeAPIKeyStore.server/usedPublicKeys})
      */
     public void readUsedPublicKeys() {
-        readUsedPublicKeys(Common.getInstance().getAndCreateAppDataPath() + fileNameForUsedPublicKeys);
+        readUsedPublicKeys(Common.getInstance().getAndCreateAppDataPath() + FILE_NAME_FOR_USED_PUBLIC_KEYS);
     }
 
     /**
@@ -178,7 +178,7 @@ public class Server {
      * @throws FileNotFoundException if the file exists but is a directory rather than a regular file, does not exist but cannot be created, or cannot be opened for any other reason
      */
     public void saveUsedPublicKeys() throws FileNotFoundException {
-        saveUsedPublicKeys(Common.getInstance().getAndCreateAppDataPath() + fileNameForUsedPublicKeys);
+        saveUsedPublicKeys(Common.getInstance().getAndCreateAppDataPath() + FILE_NAME_FOR_USED_PUBLIC_KEYS);
     }
 
     /**
@@ -211,7 +211,7 @@ public class Server {
      */
     @SuppressWarnings("UnusedReturnValue")
     public boolean resetPermanently() {
-        return resetPermanently(Common.getInstance().getAndCreateAppDataPath() + fileNameForUsedPublicKeys);
+        return resetPermanently(Common.getInstance().getAndCreateAppDataPath() + FILE_NAME_FOR_USED_PUBLIC_KEYS);
     }
 
     /**
