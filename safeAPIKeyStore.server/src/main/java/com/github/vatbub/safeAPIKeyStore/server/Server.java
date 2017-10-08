@@ -144,7 +144,7 @@ public class Server {
      * Causes the server to re-read the already used (and thus blocked) public RSA keys from disk.
      * Reads the list from the default location ({@code <appDataPath>/com.github.vatbub.safeAPIKeyStore.server/usedPublicKeys})
      */
-    public void readUsedPublicKeys() throws IOException {
+    public void readUsedPublicKeys() {
         readUsedPublicKeys(Common.getInstance().getAndCreateAppDataPath() + fileNameForUsedPublicKeys);
     }
 
@@ -154,14 +154,19 @@ public class Server {
      * @param filePath The absolute or relative path to the file to read the used keys list from
      */
     @SuppressWarnings("unchecked")
-    public void readUsedPublicKeys(String filePath) throws IOException {
+    public void readUsedPublicKeys(String filePath) {
+        FOKLogger.info(Server.class.getName(), "Trying to read the used public keys list from '" + filePath + "'...");
         try (Input input = new Input((new FileInputStream(filePath)))) {
             usedKeys = (ArrayList<byte[]>) getKryoToSaveUsedPublicKeys().readClassAndObject(input);
         } catch (KryoException | ClassCastException | NullPointerException | FileNotFoundException e) {
             FOKLogger.severe(Server.class.getName(), "Unable to read the used public keys list from disk (" + e.getClass().getName() + "), initializing an empty list...");
             File usedKeysFile = new File(filePath);
             if (usedKeysFile.exists()) {
-                Files.delete(usedKeysFile.toPath());
+                try {
+                    Files.delete(usedKeysFile.toPath());
+                } catch (IOException e1) {
+                    FOKLogger.severe(Server.class.getName(), "Unable to delete the old used public key list from the drive (" + e.getClass().getName() + "), the server will try to overwrite the file later...");
+                }
             }
             usedKeys = new ArrayList<>();
         }
@@ -229,11 +234,7 @@ public class Server {
             }
         }
 
-        try {
-            readUsedPublicKeys(pathToUsedKeysFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        readUsedPublicKeys(pathToUsedKeysFile);
         return true;
     }
 
