@@ -23,6 +23,7 @@ package com.github.vatbub.safeAPIKeyStore.client;
 
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.FrameworkMessage;
 import com.esotericsoftware.kryonet.Listener;
 import com.github.vatbub.safeAPIKeyStore.common.*;
 
@@ -44,7 +45,7 @@ import java.util.concurrent.TimeoutException;
  */
 public class APIKeyClient {
 
-    private APIKeyClient(){
+    private APIKeyClient() {
         throw new IllegalStateException("Class may not be instantiated");
     }
 
@@ -115,7 +116,7 @@ public class APIKeyClient {
             // wait for the response
             int sleepTime = responseTimeoutInMilliSeconds / 100;
             int numberOfSleeps = 0;
-            while (responseObject[0] == null) {
+            while (responseObject[0] == null || responseObject[0] instanceof FrameworkMessage.KeepAlive) {
                 if (numberOfSleeps * sleepTime >= responseTimeoutInMilliSeconds) {
                     throw new TimeoutException("Timed out while waiting for a response from the server");
                 }
@@ -126,11 +127,11 @@ public class APIKeyClient {
             // received a response
             Object object = responseObject[0];
             if (object instanceof BadRequestExceptionInternalImpl) {
-                throw new BadRequestException(((BadRequestExceptionInternalImpl)object).getMessage());
+                throw new BadRequestException(((BadRequestExceptionInternalImpl) object).getMessage());
             } else if (object instanceof InternalServerExceptionInternalImpl) {
-                throw new InternalServerException(((InternalServerExceptionInternalImpl)object).getMessage());
+                throw new InternalServerException(((InternalServerExceptionInternalImpl) object).getMessage());
             } else if (object instanceof MultipleRequestsWithSameRSAKeyExceptionInternalImpl) {
-                throw new MultipleRequestsWithSameRSAKeyException(((MultipleRequestsWithSameRSAKeyExceptionInternalImpl)object).getMessage());
+                throw new MultipleRequestsWithSameRSAKeyException(((MultipleRequestsWithSameRSAKeyExceptionInternalImpl) object).getMessage());
             } else if (object instanceof APIKeyResponse) {
                 APIKeyResponse response = (APIKeyResponse) object;
                 Cipher cipher = Cipher.getInstance("RSA");
