@@ -67,4 +67,52 @@ public class APIClientExceptionTests {
             Assert.fail("Unexpected exception thrown");
         }
     }
+
+    @Test
+    public void badRequestTest() throws InternalServerException, TimeoutException, IOException {
+        getServer().setFakeResponse(FakeServer.FakeResponse.BAD_REQUEST_EXCEPTION);
+        Assert.assertNull(APIKeyClient.getApiKey("localhost", port, apiKey1Name));
+    }
+
+    @Test
+    public void internalServerExceptionTest() {
+        try {
+            getServer().setFakeResponse(FakeServer.FakeResponse.INTERNAL_SERVER_EXCEPTION);
+            APIKeyClient.getApiKey("localhost", port, apiKey1Name);
+            Assert.fail("InternalServerException expected");
+        } catch (InternalServerException e) {
+            e.printStackTrace();
+        } catch (TimeoutException | IOException e) {
+            e.printStackTrace();
+            Assert.fail("Unexpected exception thrown");
+        }
+    }
+
+    @Test
+    public void multipleRequestsWithSameRSAKeyExceptionTest() {
+        try {
+            getServer().setFakeResponse(FakeServer.FakeResponse.MULTIPLE_REQUESTS_WITH_SAME_RSA_KEY_EXCEPTION);
+            APIKeyClient.getApiKey("localhost", port, apiKey1Name);
+            Assert.fail("MultipleRequestsWithSameRSAKeyException expected");
+        } catch (MultipleRequestsWithSameRSAKeyException e) {
+            e.printStackTrace();
+        } catch (InternalServerException | TimeoutException | IOException e) {
+            e.printStackTrace();
+            Assert.fail("Unexpected exception thrown");
+        }
+    }
+
+    @Test
+    public void illegalResponseTest() {
+        try {
+            getServer().setFakeResponse(FakeServer.FakeResponse.ILLEGAL_OBJECT);
+            APIKeyClient.getApiKey("localhost", port, apiKey1Name);
+            Assert.fail("IllegalStateException expected");
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        } catch (InternalServerException | TimeoutException | IOException e) {
+            e.printStackTrace();
+            Assert.fail("Unexpected exception thrown");
+        }
+    }
 }
