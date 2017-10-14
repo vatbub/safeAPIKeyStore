@@ -28,15 +28,38 @@ import org.junit.Test;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeoutException;
 
 public class APIKeyClientTest extends SafeAPIKeyStoreTestBase {
+    @Test
+    public void apiKeyClientInstantiationTest() {
+        try {
+            Constructor<APIKeyClient> constructor = APIKeyClient.class.getDeclaredConstructor();
+            constructor.setAccessible(true);
+            constructor.newInstance();
+            Assert.fail("Exception expected");
+        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Test
     public void getAPIKeysTest() throws BadPaddingException, BadRequestException, IOException, TimeoutException, IllegalBlockSizeException, InternalServerException {
         String apiKey1 = APIKeyClient.getApiKey("localhost", port, apiKey1Name);
         Assert.assertEquals(apiKey1Value, apiKey1);
 
         String apiKey2 = APIKeyClient.getApiKey("localhost", port, apiKey2Name);
+        Assert.assertEquals(apiKey2Value, apiKey2);
+    }
+
+    @Test
+    public void getAPIKeysUsingDefaultPortTest() throws BadPaddingException, BadRequestException, IOException, TimeoutException, IllegalBlockSizeException, InternalServerException {
+        String apiKey1 = APIKeyClient.getApiKey("localhost", apiKey1Name);
+        Assert.assertEquals(apiKey1Value, apiKey1);
+
+        String apiKey2 = APIKeyClient.getApiKey("localhost", apiKey2Name);
         Assert.assertEquals(apiKey2Value, apiKey2);
     }
 }
