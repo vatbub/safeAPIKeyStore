@@ -101,34 +101,47 @@ public class Server {
         kryoServer.addListener(new Listener() {
             @Override
             public void received(Connection connection, Object object) {
-                try {
-                    if (object instanceof APIKeyRequest) {
-                        APIKeyRequest request = (APIKeyRequest) object;
-                        byte[] encodedPublicKey = request.getEncodedClientPublicKey();
-                        PublicKey publicKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(encodedPublicKey));
-                        if (ListCommon.listContainsArray(usedKeys, encodedPublicKey)) {
-                            connection.sendTCP(new MultipleRequestsWithSameRSAKeyExceptionInternalImpl());
-                        } else {
-                            addUsedPublicKey(encodedPublicKey);
-
-                            Cipher cipher = Cipher.getInstance("RSA");
-                            cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-
-                            Charset encoding = Charset.forName("UTF-8");
-                            APIKeyResponse response = new APIKeyResponse(request.getRequestedApiKeyName(), cipher.doFinal(apiKeys.getProperty(request.getRequestedApiKeyName()).getBytes(encoding)), encoding.name());
-                            connection.sendTCP(response);
-                        }
-                    } else {
-                        connection.sendTCP(new BadRequestExceptionInternalImpl("Unknown object type"));
-                    }
-                } catch (Exception e) {
-                    FOKLogger.log(Server.class.getName(), Level.SEVERE, "Internal server exception", e);
-                    connection.sendTCP(new InternalServerExceptionInternalImpl(e.getMessage(), ExceptionUtils.getRootCauseMessage(e)));
+                Object response = createResponse(object);
+                if (response != null) {
+                    connection.sendTCP(response);
                 }
             }
         });
 
         kryoServer.start();
+    }
+
+    /**
+     * Called when the server receives an object.
+     * Override this method if you wish to modify the server's default response.
+     *
+     * @param receivedObject The object received by the server
+     * @return The object to send as a response. Set this to {@code null} to send no response at all
+     */
+    public Object createResponse(Object receivedObject) {
+        try {
+            if (receivedObject instanceof APIKeyRequest) {
+                APIKeyRequest request = (APIKeyRequest) receivedObject;
+                byte[] encodedPublicKey = request.getEncodedClientPublicKey();
+                PublicKey publicKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(encodedPublicKey));
+                if (ListCommon.listContainsArray(usedKeys, encodedPublicKey)) {
+                    return new MultipleRequestsWithSameRSAKeyExceptionInternalImpl();
+                } else {
+                    addUsedPublicKey(encodedPublicKey);
+
+                    Cipher cipher = Cipher.getInstance("RSA");
+                    cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+
+                    Charset encoding = Charset.forName("UTF-8");
+                    return new APIKeyResponse(request.getRequestedApiKeyName(), cipher.doFinal(apiKeys.getProperty(request.getRequestedApiKeyName()).getBytes(encoding)), encoding.name());
+                }
+            } else {
+                return new BadRequestExceptionInternalImpl("Unknown object type");
+            }
+        } catch (Exception e) {
+            FOKLogger.log(Server.class.getName(), Level.SEVERE, "Internal server exception", e);
+            return new InternalServerExceptionInternalImpl(e.getMessage(), ExceptionUtils.getRootCauseMessage(e));
+        }
     }
 
     private void addUsedPublicKey(byte[] encodedPublicKey) {
