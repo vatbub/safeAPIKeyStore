@@ -42,12 +42,11 @@ public abstract class SafeAPIKeyStoreTestBase {
     public static final int port = 1650;
     private static final String apiKeysFileName = "apiKeysForTesting.properties";
     private static Server server;
+    private static Properties apiKeysForTesting = new Properties();
 
     public static Properties getApiKeysForTesting() {
         return apiKeysForTesting;
     }
-
-    private static Properties apiKeysForTesting = new Properties();
 
     public static Server getServer() {
         return server;
@@ -57,7 +56,14 @@ public abstract class SafeAPIKeyStoreTestBase {
     public static void oneTimeSetUp() throws InterruptedException, IOException, IllegalAccessException {
         Common.getInstance().setAppName("SafeAPIKeyStoreServerTests");
 
-        // Create the api key file
+        File apiKeyFile = createApiKeyFile();
+
+        FOKLogger.info(SafeAPIKeyStoreTestBase.class.getName(), "Launching server...");
+        server = new Server(port, apiKeyFile.getAbsolutePath());
+        Thread.sleep(5000);
+    }
+
+    public static File createApiKeyFile() throws IOException {
         File apiKeyFile = new File(Common.getInstance().getAndCreateAppDataPath() + apiKeysFileName);
         if (apiKeyFile.exists()) {
             Files.delete(apiKeyFile.toPath());
@@ -67,9 +73,7 @@ public abstract class SafeAPIKeyStoreTestBase {
         apiKeysForTesting.setProperty(apiKey2Name, apiKey2Value);
         apiKeysForTesting.store(new FileWriter(apiKeyFile), "API Keys for unit tests of " + Common.getInstance().getAppName());
 
-        FOKLogger.info(SafeAPIKeyStoreTestBase.class.getName(), "Launching server...");
-        server = new Server(port, apiKeyFile.getAbsolutePath());
-        Thread.sleep(5000);
+        return apiKeyFile;
     }
 
     @AfterClass

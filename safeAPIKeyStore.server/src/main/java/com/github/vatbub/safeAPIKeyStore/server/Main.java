@@ -29,32 +29,27 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 public class Main {
+    private Main(){
+        throw new IllegalStateException("Class may not be instantiated");
+    }
+
     private static Server server;
+    private static Options optionsCache;
+    private static Option portOptionCache;
+    private static Option apiKeyFileOptionCache;
 
     public static void main(String[] args) {
         Common.getInstance().setAppName("com.github.vatbub.safeAPIKeyStore.server");
-        Options cliOptions = new Options();
 
-        Option portOption = new Option("p", "port", true, "The port to run the server on");
-        portOption.setRequired(false);
-        portOption.setType(Integer.class);
-
-        Option apiKeyFileOption = new Option("apiKeyFile", true, "The path to the file that contains all api keys to be served");
-        apiKeyFileOption.setRequired(true);
-        apiKeyFileOption.setType(String.class);
-
-        cliOptions.addOption(portOption);
-        cliOptions.addOption(apiKeyFileOption);
+        Options cliOptions = createCommandlineOptions();
 
         CommandLineParser parser = new DefaultParser();
 
         try {
             CommandLine commandLine = parser.parse(cliOptions, args);
-            if (commandLine.hasOption(portOption.getOpt()) || !commandLine.hasOption(apiKeyFileOption.getOpt())) {
-                printHelpMessage(cliOptions);
-            }
-            int port = Integer.parseInt(commandLine.getOptionValue(portOption.getOpt(), "1650"));
-            String apiKeyFile = commandLine.getOptionValue(apiKeyFileOption.getOpt());
+
+            int port = Integer.parseInt(commandLine.getOptionValue(createPortOption().getOpt(), "1650"));
+            String apiKeyFile = commandLine.getOptionValue(createApiKeyFileOption().getOpt());
 
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 if (server != null) {
@@ -68,6 +63,38 @@ public class Main {
         } catch (IOException e) {
             FOKLogger.log(Main.class.getName(), Level.SEVERE, "Could not launch the server", e);
         }
+    }
+
+    public static Server getServer() {
+        return server;
+    }
+
+    public static Options createCommandlineOptions() {
+        if (optionsCache == null) {
+            optionsCache = new Options();
+
+            optionsCache.addOption(createPortOption());
+            optionsCache.addOption(createApiKeyFileOption());
+        }
+        return optionsCache;
+    }
+
+    public static Option createPortOption() {
+        if (portOptionCache == null) {
+            portOptionCache = new Option("p", "port", true, "The port to run the server on");
+            portOptionCache.setRequired(false);
+            portOptionCache.setType(Integer.class);
+        }
+        return portOptionCache;
+    }
+
+    public static Option createApiKeyFileOption() {
+        if (apiKeyFileOptionCache == null) {
+            apiKeyFileOptionCache = new Option("apiKeyFile", true, "The path to the file that contains all api keys to be served (required)");
+            apiKeyFileOptionCache.setRequired(true);
+            apiKeyFileOptionCache.setType(String.class);
+        }
+        return apiKeyFileOptionCache;
     }
 
     public static void printHelpMessage(Options cliOptions) {
