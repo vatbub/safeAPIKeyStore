@@ -217,6 +217,11 @@ public class ServerTest extends SafeAPIKeyStoreTestBase {
         shutDownThread.join();
     }
 
+    @Test
+    public void apiKeysListTest(){
+        Assert.assertEquals(getApiKeysForTesting(), getServer().getApiKeys());
+    }
+
     /**
      * Ends the currently running test
      */

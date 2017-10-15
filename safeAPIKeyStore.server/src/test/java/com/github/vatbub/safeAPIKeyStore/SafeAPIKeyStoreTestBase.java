@@ -43,6 +43,12 @@ public abstract class SafeAPIKeyStoreTestBase {
     private static final String apiKeysFileName = "apiKeysForTesting.properties";
     private static Server server;
 
+    public static Properties getApiKeysForTesting() {
+        return apiKeysForTesting;
+    }
+
+    private static Properties apiKeysForTesting = new Properties();
+
     public static Server getServer() {
         return server;
     }
@@ -56,7 +62,7 @@ public abstract class SafeAPIKeyStoreTestBase {
         if (apiKeyFile.exists()) {
             Files.delete(apiKeyFile.toPath());
         }
-        Properties apiKeysForTesting = new Properties();
+
         apiKeysForTesting.setProperty(apiKey1Name, apiKey1Value);
         apiKeysForTesting.setProperty(apiKey2Name, apiKey2Value);
         apiKeysForTesting.store(new FileWriter(apiKeyFile), "API Keys for unit tests of " + Common.getInstance().getAppName());
@@ -69,11 +75,11 @@ public abstract class SafeAPIKeyStoreTestBase {
     @AfterClass
     public static void oneTimeTeardown() {
         FOKLogger.info(SafeAPIKeyStoreTestBase.class.getName(), "Shutting server down...");
-        server.stop();
+        getServer().stop();
     }
 
     @Before
     public void setUp() {
-        server.resetPermanently();
+        getServer().resetPermanently();
     }
 }
