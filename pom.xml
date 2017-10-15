@@ -89,5 +89,11 @@
             <artifactId>common.core</artifactId>
             <version>0.1.2-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <version>3.0.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

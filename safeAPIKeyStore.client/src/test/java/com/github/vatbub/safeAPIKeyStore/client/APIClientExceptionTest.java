@@ -30,7 +30,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import static org.awaitility.Awaitility.await;
 
 public class APIClientExceptionTest {
     public static final String apiKey1Name = "apiKey1";
@@ -61,7 +64,7 @@ public class APIClientExceptionTest {
 
         FOKLogger.info(com.github.vatbub.safeAPIKeyStore.SafeAPIKeyStoreTestBase.class.getName(), "Launching server...");
         server = new FakeServer(port, apiKeyFile.getAbsolutePath(), FakeServer.FakeResponse.TRUE_ANSWER);
-        Thread.sleep(5000);
+        await().atMost(5, TimeUnit.SECONDS);
     }
 
     @AfterClass

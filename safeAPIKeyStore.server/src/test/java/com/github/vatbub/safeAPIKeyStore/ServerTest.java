@@ -38,6 +38,9 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import static org.awaitility.Awaitility.await;
 
 public class ServerTest extends SafeAPIKeyStoreTestBase {
     private static Client client;
@@ -66,14 +69,10 @@ public class ServerTest extends SafeAPIKeyStoreTestBase {
             while (!isShutDown) {
                 System.out.print("");
                 if (shutClientDown) {
-                    try {
-                        // shut client down
-                        client.close();
-                        Thread.sleep(5000);
-                        isShutDown = true;
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    // shut client down
+                    client.close();
+                    await().atMost(5, TimeUnit.SECONDS);
+                    isShutDown = true;
                 }
             }
         });

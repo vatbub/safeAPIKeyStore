@@ -33,6 +33,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
+
+import static org.awaitility.Awaitility.await;
 
 public abstract class SafeAPIKeyStoreTestBase {
     public static final String apiKey1Name = "apiKey1";
@@ -60,7 +63,7 @@ public abstract class SafeAPIKeyStoreTestBase {
 
         FOKLogger.info(SafeAPIKeyStoreTestBase.class.getName(), "Launching server...");
         server = new Server(port, apiKeyFile.getAbsolutePath());
-        Thread.sleep(5000);
+        await().atMost(5, TimeUnit.SECONDS);
     }
 
     public static File createApiKeyFile() throws IOException {
