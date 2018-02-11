@@ -1,8 +1,7 @@
 # Change Log
 
-## [Unreleased](https://github.com/vatbub/safeAPIKeyStore/tree/HEAD)
-
-[Full Changelog](https://github.com/vatbub/safeAPIKeyStore/compare/safeAPIKeyStore-1.0...HEAD)
+## [safeAPIKeyStore-1.1](https://github.com/vatbub/safeAPIKeyStore/tree/safeAPIKeyStore-1.1) (2018-02-11)
+[Full Changelog](https://github.com/vatbub/safeAPIKeyStore/compare/safeAPIKeyStore-1.0...safeAPIKeyStore-1.1)
 
 **Fixed bugs:**
 
