@@ -29,6 +29,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.github.vatbub.common.core.Common;
 import com.github.vatbub.common.core.ListCommon;
+import com.github.vatbub.common.core.SystemUtils;
 import com.github.vatbub.common.core.logging.FOKLogger;
 import com.github.vatbub.safeAPIKeyStore.common.*;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -42,6 +43,7 @@ import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 /**
@@ -53,6 +55,8 @@ public class Server {
     private Properties apiKeys;
     private com.esotericsoftware.kryonet.Server kryoServer;
     private ArrayList<byte[]> usedKeys;
+    private boolean autoShutdownEnabled;
+    private long minutesToIdleBeforeAutoShutdown;
 
     /**
      * Launches a server on the specified port with the specified api keys.
@@ -101,10 +105,12 @@ public class Server {
         kryoServer.addListener(new Listener() {
             @Override
             public void received(Connection connection, Object object) {
+                SystemUtils.getInstance().cancelAutoShutdownTimer();
                 Object response = createResponse(object);
                 if (response != null) {
                     connection.sendTCP(response);
                 }
+                setAutoShutdownTimer();
             }
         });
 
@@ -236,6 +242,7 @@ public class Server {
      * @see #resetTemporarily()
      */
     public boolean resetPermanently(String pathToUsedKeysFile) {
+        SystemUtils.getInstance().cancelAutoShutdownTimer();
         File usedKeysFile = new File(pathToUsedKeysFile);
         if (usedKeysFile.exists()) {
             try {
@@ -256,6 +263,7 @@ public class Server {
      */
     public void resetTemporarily() {
         usedKeys = new ArrayList<>();
+        SystemUtils.getInstance().cancelAutoShutdownTimer();
     }
 
     /**
@@ -263,5 +271,28 @@ public class Server {
      */
     public void stop() {
         kryoServer.stop();
+    }
+
+    public boolean isAutoShutdownEnabled() {
+        return autoShutdownEnabled;
+    }
+
+    public void setAutoShutdownEnabled(boolean autoShutdownEnabled) {
+        this.autoShutdownEnabled = autoShutdownEnabled;
+        setAutoShutdownTimer();
+    }
+
+    public long getMinutesToIdleBeforeAutoShutdown() {
+        return minutesToIdleBeforeAutoShutdown;
+    }
+
+    public void setMinutesToIdleBeforeAutoShutdown(long minutesToIdleBeforeAutoShutdown) {
+        this.minutesToIdleBeforeAutoShutdown = minutesToIdleBeforeAutoShutdown;
+        setAutoShutdownTimer();
+    }
+
+    private void setAutoShutdownTimer() {
+        if (isAutoShutdownEnabled())
+            SystemUtils.getInstance().startAutoShutdownTimer(getMinutesToIdleBeforeAutoShutdown(), TimeUnit.MINUTES);
     }
 }

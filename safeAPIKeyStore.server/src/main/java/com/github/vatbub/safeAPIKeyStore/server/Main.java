@@ -29,14 +29,15 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 public class Main {
-    private Main(){
-        throw new IllegalStateException("Class may not be instantiated");
-    }
-
     private static Server server;
     private static Options optionsCache;
     private static Option portOptionCache;
     private static Option apiKeyFileOptionCache;
+    private static Option autoShutdownOptionCache;
+    private static Option autoShutdownDurationOptionCache;
+    private Main() {
+        throw new IllegalStateException("Class may not be instantiated");
+    }
 
     public static void main(String[] args) {
         Common.getInstance().setAppName("com.github.vatbub.safeAPIKeyStore.server");
@@ -58,6 +59,13 @@ public class Main {
             }));
 
             server = new Server(port, apiKeyFile);
+
+            if (commandLine.hasOption(createAutoShutdownOption().getOpt()))
+                server.setAutoShutdownEnabled(true);
+            if (commandLine.hasOption(createAutoShutdownDurationOption().getOpt()))
+                server.setMinutesToIdleBeforeAutoShutdown(Long.parseLong(commandLine.getOptionValue(createAutoShutdownDurationOption().getOpt())));
+            else
+                server.setMinutesToIdleBeforeAutoShutdown(5);
         } catch (ParseException e) {
             printHelpMessage(cliOptions);
         } catch (IOException e) {
@@ -75,6 +83,8 @@ public class Main {
 
             optionsCache.addOption(createPortOption());
             optionsCache.addOption(createApiKeyFileOption());
+            optionsCache.addOption(createAutoShutdownOption());
+            optionsCache.addOption(createAutoShutdownDurationOption());
         }
         return optionsCache;
     }
@@ -95,6 +105,23 @@ public class Main {
             apiKeyFileOptionCache.setType(String.class);
         }
         return apiKeyFileOptionCache;
+    }
+
+    public static Option createAutoShutdownOption() {
+        if (autoShutdownOptionCache == null) {
+            autoShutdownOptionCache = new Option("autoShutdown", false, "If specified, the server will automatically shut down when idle for 5 minutes. Use --autoShutdownDuration to change that value.");
+            autoShutdownOptionCache.setRequired(false);
+        }
+        return autoShutdownOptionCache;
+    }
+
+    public static Option createAutoShutdownDurationOption() {
+        if (autoShutdownDurationOptionCache == null) {
+            autoShutdownDurationOptionCache = new Option("autoShutdownDuration", true, "The server will automatically shut down when being idle for the specified amount of minutes. This option has no effect if --autoShutdown is not specified.");
+            autoShutdownDurationOptionCache.setRequired(false);
+            autoShutdownDurationOptionCache.setType(Double.class);
+        }
+        return autoShutdownDurationOptionCache;
     }
 
     public static void printHelpMessage(Options cliOptions) {
