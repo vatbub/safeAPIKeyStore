@@ -60,12 +60,13 @@ public class Main {
 
             server = new Server(port, apiKeyFile);
 
-            if (commandLine.hasOption(createAutoShutdownOption().getOpt()))
-                server.setAutoShutdownEnabled(true);
             if (commandLine.hasOption(createAutoShutdownDurationOption().getOpt()))
                 server.setMinutesToIdleBeforeAutoShutdown(Long.parseLong(commandLine.getOptionValue(createAutoShutdownDurationOption().getOpt())));
             else
                 server.setMinutesToIdleBeforeAutoShutdown(5);
+
+            if (commandLine.hasOption(createAutoShutdownOption().getOpt()))
+                server.setAutoShutdownEnabled(true);
         } catch (ParseException e) {
             printHelpMessage(cliOptions);
         } catch (IOException e) {
