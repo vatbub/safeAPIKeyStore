@@ -3,6 +3,11 @@
 ## [safeAPIKeyStore-1.1](https://github.com/vatbub/safeAPIKeyStore/tree/safeAPIKeyStore-1.1) (2018-02-11)
 [Full Changelog](https://github.com/vatbub/safeAPIKeyStore/compare/safeAPIKeyStore-1.0...safeAPIKeyStore-1.1)
 
+**Fixed bugs:**
+
+- Server fails to send exceptions [\#2](https://github.com/vatbub/safeAPIKeyStore/issues/2)
+- Server does not send exception when using the same public key twice [\#1](https://github.com/vatbub/safeAPIKeyStore/issues/1)
+
 ## [safeAPIKeyStore-1.0](https://github.com/vatbub/safeAPIKeyStore/tree/safeAPIKeyStore-1.0) (2017-09-20)
 
 
