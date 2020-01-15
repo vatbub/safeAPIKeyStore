@@ -1,5 +1,17 @@
 # Change Log
 
+## [Unreleased](https://github.com/vatbub/safeAPIKeyStore/tree/HEAD)
+
+[Full Changelog](https://github.com/vatbub/safeAPIKeyStore/compare/safeAPIKeyStore-1.1...HEAD)
+
+**Merged pull requests:**
+
+- Bump kryo from 5.0.0-RC1 to 5.0.0-SNAPSHOT [\#7](https://github.com/vatbub/safeAPIKeyStore/pull/7) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump commons-lang3 from 3.8.1 to 3.9 [\#6](https://github.com/vatbub/safeAPIKeyStore/pull/6) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump maven-jar-plugin from 3.0.2 to 3.2.0 [\#5](https://github.com/vatbub/safeAPIKeyStore/pull/5) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump awaitility from 3.1.2 to 4.0.2 [\#4](https://github.com/vatbub/safeAPIKeyStore/pull/4) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump system-rules from 1.18.0 to 1.19.0 [\#3](https://github.com/vatbub/safeAPIKeyStore/pull/3) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+
 ## [safeAPIKeyStore-1.1](https://github.com/vatbub/safeAPIKeyStore/tree/safeAPIKeyStore-1.1) (2018-02-11)
 [Full Changelog](https://github.com/vatbub/safeAPIKeyStore/compare/safeAPIKeyStore-1.0...safeAPIKeyStore-1.1)
 
