@@ -1,4 +1,4 @@
-# safeAPIKeyStore
+# safeAPIKeyStore [![Build Status](https://travis-ci.org/vatbub/randomusers.svg?branch=master)](https://travis-ci.org/vatbub/randomusers)
 Big online service providers often require an api key to use their apis. They tell you to keep this api key secret and to treat it like a password.
 But what if you want to use the api in an open source application with anonymous access? This library will help you out!
 
