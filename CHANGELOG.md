@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- Bump kryo from 5.0.0-RC4 to 5.0.0-RC5 [\#10](https://github.com/vatbub/safeAPIKeyStore/pull/10) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump parentPom from 1.0.1-SNAPSHOT to 1.0.3-SNAPSHOT [\#9](https://github.com/vatbub/safeAPIKeyStore/pull/9) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump kryo from 5.0.0-RC1 to 5.0.0-SNAPSHOT [\#7](https://github.com/vatbub/safeAPIKeyStore/pull/7) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump commons-lang3 from 3.8.1 to 3.9 [\#6](https://github.com/vatbub/safeAPIKeyStore/pull/6) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
