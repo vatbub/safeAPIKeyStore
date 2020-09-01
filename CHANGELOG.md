@@ -1,27 +1,7 @@
 # Change Log
 
-## [Unreleased](https://github.com/vatbub/safeAPIKeyStore/tree/HEAD)
-
-[Full Changelog](https://github.com/vatbub/safeAPIKeyStore/compare/safeAPIKeyStore-1.1...HEAD)
-
-**Merged pull requests:**
-
-- Bump commons-lang3 from 3.9 to 3.10 [\#11](https://github.com/vatbub/safeAPIKeyStore/pull/11) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
-- Bump kryo from 5.0.0-RC4 to 5.0.0-RC5 [\#10](https://github.com/vatbub/safeAPIKeyStore/pull/10) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
-- Bump parentPom from 1.0.1-SNAPSHOT to 1.0.3-SNAPSHOT [\#9](https://github.com/vatbub/safeAPIKeyStore/pull/9) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
-- Bump kryo from 5.0.0-RC1 to 5.0.0-SNAPSHOT [\#7](https://github.com/vatbub/safeAPIKeyStore/pull/7) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
-- Bump commons-lang3 from 3.8.1 to 3.9 [\#6](https://github.com/vatbub/safeAPIKeyStore/pull/6) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
-- Bump maven-jar-plugin from 3.0.2 to 3.2.0 [\#5](https://github.com/vatbub/safeAPIKeyStore/pull/5) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
-- Bump awaitility from 3.1.2 to 4.0.2 [\#4](https://github.com/vatbub/safeAPIKeyStore/pull/4) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
-- Bump system-rules from 1.18.0 to 1.19.0 [\#3](https://github.com/vatbub/safeAPIKeyStore/pull/3) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
-
 ## [safeAPIKeyStore-1.1](https://github.com/vatbub/safeAPIKeyStore/tree/safeAPIKeyStore-1.1) (2018-02-11)
 [Full Changelog](https://github.com/vatbub/safeAPIKeyStore/compare/safeAPIKeyStore-1.0...safeAPIKeyStore-1.1)
-
-**Fixed bugs:**
-
-- Server fails to send exceptions [\#2](https://github.com/vatbub/safeAPIKeyStore/issues/2)
-- Server does not send exception when using the same public key twice [\#1](https://github.com/vatbub/safeAPIKeyStore/issues/1)
 
 ## [safeAPIKeyStore-1.0](https://github.com/vatbub/safeAPIKeyStore/tree/safeAPIKeyStore-1.0) (2017-09-20)
 
