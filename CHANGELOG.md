@@ -8,6 +8,7 @@
 
 - Bump kryo from 5.0.0-RC5 to 5.0.0-RC8 [\#14](https://github.com/vatbub/safeAPIKeyStore/pull/14) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump commons-lang3 from 3.10 to 3.11 [\#13](https://github.com/vatbub/safeAPIKeyStore/pull/13) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump awaitility from 4.0.2 to 4.0.3 [\#12](https://github.com/vatbub/safeAPIKeyStore/pull/12) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump commons-lang3 from 3.9 to 3.10 [\#11](https://github.com/vatbub/safeAPIKeyStore/pull/11) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump kryo from 5.0.0-RC4 to 5.0.0-RC5 [\#10](https://github.com/vatbub/safeAPIKeyStore/pull/10) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump parentPom from 1.0.1-SNAPSHOT to 1.0.3-SNAPSHOT [\#9](https://github.com/vatbub/safeAPIKeyStore/pull/9) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
